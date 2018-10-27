@@ -10,7 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     school = db.Column(db.String(128), index=True)
-    requests = db.relationships('Request', backref='author', lazy='dynamic')
+    requests = db.relationship('Request', backref='author', lazy='dynamic')
     completed_requests = db.relationship('Request', backref='shopper', lazy='dynamic')
      
 
@@ -27,20 +27,21 @@ class User(UserMixin, db.Model):
 class Request(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time_of_order = db.Column(db.DateTime, default=datetime.utcnow)
-    placed = db.Column(db.Boolean, default=false)
+    placed = db.Column(db.Boolean, default=False)
     placed_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     fulfilled_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     contents = db.relationship('Content', backref='cart', lazy='dynamic')
 
 
 class Content(db.Model):
-    req_id = db.Column(db.Integer, db.ForeignKey('request.id'))
-    item_id = db.relationship('Item', backref = 'order', lazy='dynamic')
+    req_id = db.Column(db.Integer, db.ForeignKey('request.id'), primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey('item.id'), primary_key=True)
     quantity = db.Column(db.Integer, default = 1)
+    item = db.relationship("Item", back_populates="Request")
 
 
 class Item(db.Model):
-    id = db.Column(db.Integer, db.ForeignKey('content.id'), index=True, unique=True)
+    id = db.relationship('Content', db.Integer, backref='order', index=True, unique=True, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     price = db.Column(db.Float)
 
