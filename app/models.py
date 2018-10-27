@@ -6,10 +6,12 @@ from flask_login import UserMixin
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    phone = db.Column(db.Integer, index=True, unique=True)
+    phone = db.Column(db.String(10), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     school = db.Column(db.String(128), index=True)
+    requests = db.relationships('Request', backref='author', lazy='dynamic')
+    completed_requests = db.relationship('Request', backref='shopper', lazy='dynamic')
      
 
     def __repr__(self):
@@ -21,6 +23,26 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
+class Request(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    time_of_order = db.Column(db.DateTime, default=datetime.utcnow)
+    placed = db.Column(db.Boolean, default=false)
+    placed_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    fulfilled_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    contents = db.relationship('Content', backref='cart', lazy='dynamic')
+
+
+class Content(db.Model):
+    req_id = db.Column(db.Integer, db.ForeignKey('request.id'))
+    item_id = db.relationship('Item', backref = 'order', lazy='dynamic')
+    quantity = db.Column(db.Integer, default = 1)
+
+
+class Item(db.Model):
+    id = db.Column(db.Integer, db.ForeignKey('content.id'), index=True, unique=True)
+    name = db.Column(db.String(128), unique=True)
+    price = db.Column(db.Float)
 
 @login.user_loader
 def load_user(id):
