@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for
 from sqlalchemy.sql import collate
+from sqlalchemy.sql import func
 
 from app import db
 from app.main import bp
@@ -11,7 +12,7 @@ from flask_login import current_user, login_required
 @login_required
 def home():
     requests = Request.query.all()
-    return render_template('home.html')
+    return render_template('home.html', requests=requests)
 
 
 @bp.route('/neworder', methods=['GET', 'POST'])
