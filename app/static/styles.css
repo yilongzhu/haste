@@ -6,3 +6,7 @@
 tbody.list tr td:nth-child(3) input {
     width: 2em;
 }
+
+table#order-feed tr:hover {
+    cursor: pointer;
+}
