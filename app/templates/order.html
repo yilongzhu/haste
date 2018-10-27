@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>Order placed by {{ user.id }}</h1>
+<h2>{{ order.time_of_order }}</h2>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -12,11 +14,15 @@
     <tbody>
         {% for item in items %}
         <tr>
-            <td scope="row">{{ item[name] }}</td>
-            <td scope="row">{{ item[name] }}</td>
-            <td scope="row"></td>
+            <td scope="row">{{ item[0] }}</td>
+            <td scope="row">{{ item[2] }}</td>
+            <td scope="row">{{ "$%.2f"|format(item[1]*item[2]) }}</td>
         </tr>
         {% endfor %}
+        <tr>
+            <td></td>
+            <td>Order Total:</td>
+            <td>${{ sum }}</td>
     </tbody>
 </table>
 {% endblock %}

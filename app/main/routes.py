@@ -4,7 +4,7 @@ from sqlalchemy.sql import func, desc
 
 from app import db
 from app.main import bp
-from app.models import Item, Order, Content
+from app.models import User, Item, Order, Content
 from flask_login import current_user, login_required
 
 
@@ -65,7 +65,13 @@ def new_order():
 @login_required
 def order(id):
     order = Order.query.filter_by(id=id).first_or_404()
-    items = db.engine.execute("SELECT * FROM content JOIN item ON content.item_id=item.id WHERE content.order_id=:val", {'val': order.id})
-
+    items = db.engine.execute("SELECT item.name, item.price, quantity FROM content JOIN item ON content.item_id=item.id WHERE content.order_id=:val", {'val': order.id})
+    user = User.query.filter_by(id=order.placed_by).first()
+    price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE order_id=:val", {'val': order.id})
+    sum = 0
+    for row in price:
+        sum = row['sum']
+    # for i in items:
+    #     print(i[0])
     #items = Content.query.join(Item, Content.item_id==Item.id).add_columns(Item.price).filter(Content.order_id==order.id).all()
-    return render_template('order.html', items = items)
+    return render_template('order.html', order=order, user=user, items = items, sum=sum)
