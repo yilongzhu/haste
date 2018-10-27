@@ -41,7 +41,7 @@ class Content(db.Model):
 
 class Item(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    name = db.Column(db.String(128), unique=True)
+    name = db.Column(db.String(128), unique=True, index=True)
     price = db.Column(db.Float)
     in_content = db.relationship('Content', backref='item', lazy='dynamic')
 
