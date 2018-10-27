@@ -10,6 +10,7 @@ from flask_login import current_user, login_required
 @bp.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
+    requests = Request.query.all()
     return render_template('home.html')
 
 
