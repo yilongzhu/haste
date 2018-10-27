@@ -28,7 +28,7 @@ def login():
             next_page = url_for('main.index')
         return redirect(next_page)
 
-    return render_template('login.html', title='Login', form=form)
+    return render_template('auth/login.html', title='Login', form=form)
 
 
 @bp.route('/logout')
@@ -50,6 +50,6 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('You are now registered.')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     return render_template('auth/register.html', title='Register', form=form)
