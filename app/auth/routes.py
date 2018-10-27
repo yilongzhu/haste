@@ -10,43 +10,35 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 
 
-@bp.route('/login', methods=['GET', 'POST'])
-def login():
+@bp.route('/', methods=['GET', 'POST'])
+@bp.route('/index', methods=['GET', 'POST'])
+def index():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
+    
+    login_form = LoginForm()
+    registration_form = RegistrationForm()
 
-    form = LoginForm()
-
-    if form.validate_on_submit():
+    if login_form.validate_on_submit():
         user = User.query.filter((User.phone==form.phone.data) | (User.email==form.email.data)).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid phone number or password')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('main.home'))
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('main.home'))
 
-    return render_template('auth/login.html', title='Login', form=form)
+    if registration_form.validate_on_submit():
+        user = User(phone=form.phone.data, email=form.email.data, school=form.school.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Please login to continue.')
+        return redirect(url_for('main.index'))
+
+    return render_template('index.html')
 
 
 @bp.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
-
-
-@bp.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
-
-    form = RegistrationForm()
-
-    print(form.validate_on_submit())
-    if form.validate_on_submit():
-        user = User(phone=form.phone.data, email=form.email.data, school=form.school.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('You are now registered!')
-
-    return render_template('auth/register.html', title='Register', form=form)
