@@ -10,8 +10,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     school = db.Column(db.String(128), index=True)
-    requests = db.relationship('Request', foreign_keys='[Request.placed_by]', backref='author', lazy='dynamic')
-    completed_requests = db.relationship('Request', foreign_keys='[Request.accepted_by]', backref='shopper', lazy='dynamic')
+    orders = db.relationship('Order', foreign_keys='[Order.placed_by]', backref='author', lazy='dynamic')
+    completed_orders = db.relationship('Order', foreign_keys='[Order.accepted_by]', backref='shopper', lazy='dynamic')
      
 
     def __repr__(self):
@@ -24,7 +24,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Request(db.Model):
+class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time_of_order = db.Column(db.DateTime, default=datetime.utcnow)
     placed_by = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -34,7 +34,7 @@ class Request(db.Model):
 
 
 class Content(db.Model):
-    req_id = db.Column(db.Integer, db.ForeignKey('request.id'), primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'), primary_key=True)
     quantity = db.Column(db.Integer, default=1)
 

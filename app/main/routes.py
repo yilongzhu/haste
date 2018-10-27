@@ -4,18 +4,18 @@ from sqlalchemy.sql import func
 
 from app import db
 from app.main import bp
-from app.models import Item, Request, Content
+from app.models import Item, Order, Content
 from flask_login import current_user, login_required
 
 
 @bp.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    requests = Request.query.filter_by(accepted_by=None).all()
+    orders = Order.query.filter_by(accepted_by=None).all()
     quantity_price = []
-    for req in requests:
-        quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.req_id==req.id)[0].total_q
-        price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE req_id=:val", {'val': req.id})
+    for order in orders:
+        quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.order_id==order.id)[0].total_q
+        price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE order_id=:val", {'val': order.id})
         sum = 0
         for row in price:
             sum = row['sum']
@@ -24,7 +24,7 @@ def home():
         print(sum)
 
 
-    return render_template('home.html', rqp=zip(requests, quantity_price))
+    return render_template('home.html', rqp=zip(orders, quantity_price))
 
 
 @bp.route('/neworder', methods=['GET', 'POST'])
@@ -39,8 +39,8 @@ def new_order():
                 newdict[key] = data[key]
                 print("Added to dict")
 
-        req = Request(author=current_user)
-        db.session.add(req)
+        order = Order(author=current_user)
+        db.session.add(order)
         db.session.commit()
 
         for key in newdict:
@@ -58,8 +58,8 @@ def new_order():
     return render_template('new_order.html', items=items)
 
 
-@bp.route('/cart', methods=['GET', 'POST'])
+@bp.route('/order<int:id>', methods=['GET', 'POST'])
 @login_required
-def cart():
-    #items = Item.query.all()
-    return render_template('cart.html', items=items)
+def order(id):
+
+    return render_template('order.html', items=items)
