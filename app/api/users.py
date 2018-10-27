@@ -3,7 +3,7 @@ from flask import jsonify
 from app import db
 from app.api import bp
 from app.models import User
-from app.schemas import user_schema
+from app.schemas import user_schema, users_schema
 
 
 @bp.route('/user/<int:id>', methods=['GET'])
@@ -15,4 +15,4 @@ def get_user(id):
 @bp.route('/user/', methods=['GET'])
 def get_users():
     users = User.query.all()
-    return jsonify(user_schema.dump(users).data)
+    return jsonify(users_schema.dump(users).data)

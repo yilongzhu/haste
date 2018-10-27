@@ -8,6 +8,7 @@ from app.auth import bp
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
+from sqlalchemy import or_
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -18,7 +19,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(phone=form.phone.data).first()
+        user = User.query.filter((User.phone==form.phone.data) | (User.email==form.email.data)).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid phone number or password')
             return redirect(url_for('auth.login'))
@@ -44,16 +45,12 @@ def register():
 
     form = RegistrationForm()
 
-    print("Entered route again")
     print(form.validate_on_submit())
     if form.validate_on_submit():
-        print("Entered if statement")
-        user = User(phone=form.phone.data, email=form.email.data)
+        user = User(phone=form.phone.data, email=form.email.data, school=form.school.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('You are now registered!')
-        return redirect(url_for('auth.login'))
-    print("After if statement")
 
     return render_template('auth/register.html', title='Register', form=form)
