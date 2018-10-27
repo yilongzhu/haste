@@ -11,7 +11,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     school = db.Column(db.String(128), index=True)
     requests = db.relationship('Request', foreign_keys='[Request.placed_by]', backref='author', lazy='dynamic')
-    completed_requests = db.relationship('Request', foreign_keys='[Request.fulfilled_by]', backref='shopper', lazy='dynamic')
+    completed_requests = db.relationship('Request', foreign_keys='[Request.accepted_by]', backref='shopper', lazy='dynamic')
      
 
     def __repr__(self):
@@ -27,9 +27,9 @@ class User(UserMixin, db.Model):
 class Request(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time_of_order = db.Column(db.DateTime, default=datetime.utcnow)
-    placed = db.Column(db.Boolean, default=False)
     placed_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    fulfilled_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    accepted_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    completed = db.Column(db.Boolean, default=False)
     contents = db.relationship('Content', backref='cart', lazy='dynamic')
 
 
