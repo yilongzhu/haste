@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Login</h1>
+<!--<h1>Login</h1>
 <form action = "" method = "post" novalidate>
     {{ login_form.hidden_tag() }}
     <div class="container">
         <div class = "row justify-content-end">
-            <div class = "col-sm">
+            <div class="col-sm">
                 {{ login_form.username.label }}<br>
-                {{ login_form.username(size = 32) }}  
+                {{ login_form.username(size=32) }}  
                 {% for error in login_form.username.errors %}
                 <span style = "color: red;">[{{ error }}]</span>
                 {% endfor %}
             </div>  
-            <div class = "col-sm">
+            <div class="col-sm">
                 {{ login_form.password.label }}<br>
                 {{ login_form.password(size = 32) }}
                 {% for error in login_form.password.errors %}
@@ -26,46 +26,48 @@
             </div>
         </div>
     </div>
-</form>
+</form>-->
 
 <h1>Register</h1>
-<form action = "" method ="post" novalidate>
-    {{ registration_form.hidden_tag() }}
-    <p>
-        {{ registration_form.phone.label }}<br>
-        {{ registration_form.phone(size=32) }} <br>
-        {% for error in registration_form.phone.errors %}
-        <span style = "color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ registration_form.email.label }}<br>
-        {{ registration_form.email(size=64) }}<br>
-        {% for error in registration_form.email.errors %}
-        <span style = "color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ registration_form.password.label }}<br>
-        {{ registration_form.password(size=32) }}<br>
-        {% for error in registration_form.password.errors %}
-        <span style = "color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ registration_form.password2.label }}<br>
-        {{ registration_form.password2(size=32) }}<br>
-        {% for error in registration_form.password2.errors %}
-        <span style = "color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ registration_form.school.label }}<br>
-        {{ registration_form.school(size=32) }}<br>
-        {% for error in registration_form.school.errors %}
-        <span style = "color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>{{ registration_form.submit() }}</p>
-</form>
+<div class='container'>
+    <form action = "" method ="post" novalidate>
+        {{ registration_form.hidden_tag() }}
+        <div class='form-group'>
+            {{ registration_form.phone.label(for="phone-registration") }}
+            {{ registration_form.phone(size=32, class="form-control", id="phone-registration", placeholder="Enter phone number") }}
+            {% for error in registration_form.phone.errors %}
+            <span style = "color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div class='form-group'>
+            {{ registration_form.email.label(for='email-registration') }}
+            {{ registration_form.email(size=64, class='form-control', id='email-registration', placeholder="Enter email") }}
+            {% for error in registration_form.email.errors %}
+            <span style = "color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div class='form-group'>
+            {{ registration_form.password.label(for='set-password') }}
+            {{ registration_form.password(size=32, class='form-control', id='set-password', placeholder="Password") }}
+            {% for error in registration_form.password.errors %}
+            <span style = "color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div class='form-group'>
+            {{ registration_form.password2.label(for='retype-password') }}
+            {{ registration_form.password2(size=32, class='form-control', id='retype-password', placeholder="Retype password") }}
+            {% for error in registration_form.password2.errors %}
+            <span style = "color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div class='form-group'>
+            {{ registration_form.school.label(for='set-school') }}<br>
+            {{ registration_form.school(size=32, class='form-control', id='set-school', placeholder='College affiliaton') }}
+            {% for error in registration_form.school.errors %}
+            <span style = "color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        {{ registration_form.submit(class='btn btn-primary') }}
+    </form>
+</div>
 {% endblock %}
