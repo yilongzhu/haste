@@ -1,35 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!--<h1>Login</h1>
-<form action = "" method = "post" novalidate>
-    {{ login_form.hidden_tag() }}
-    <div class="container">
-        <div class = "row justify-content-end">
-            <div class="col-sm">
-                {{ login_form.username.label }}<br>
-                {{ login_form.username(size=32) }}  
-                {% for error in login_form.username.errors %}
-                <span style = "color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </div>  
-            <div class="col-sm">
-                {{ login_form.password.label }}<br>
-                {{ login_form.password(size = 32) }}
-                {% for error in login_form.password.errors %}
-                <span style = "color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </div>
-            <div class="col-sm">
-                <p>{{ login_form.remember_me() }} {{ login_form.remember_me.label }}</p>
-                <p>{{ login_form.submit() }}</p>
-            </div>
+<div class="container">
+    <h1>Login</h1>
+    <form action = "" method = "post" novalidate>
+        {{ login_form.hidden_tag() }}       
+        <div class="form-group">
+            {{ login_form.username.label(for="user-login") }}<br>
+            {{ login_form.username(size=32, class="form-control, id="user-login", placeholder="Phone number or username") }}  
+            {% for error in login_form.username.errors %}
+            <span style = "color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>  
+        <div class="col-sm">
+            {{ login_form.password.label }}<br>
+            {{ login_form.password(size = 32) }}
+            {% for error in login_form.password.errors %}
+            <span style = "color: red;">[{{ error }}]</span>
+            {% endfor %}
         </div>
-    </div>
-</form>-->
+        <div class="col-sm">
+            <p>{{ login_form.remember_me() }} {{ login_form.remember_me.label }}</p>
+            <p>{{ login_form.submit() }}</p>
+        </div>
+    </form>
+</div>
 
-<h1>Register</h1>
 <div class='container'>
+    <h1>Register</h1>
     <form action = "" method ="post" novalidate>
         {{ registration_form.hidden_tag() }}
         <div class='form-group'>
