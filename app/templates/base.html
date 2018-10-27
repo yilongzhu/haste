@@ -5,11 +5,9 @@
     <meta name="viewport" content ="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     {% if title %}
-    <title>
-        {{ title }} - Haste</title>
+    <title>{{ title }} - Haste</title>
     {% else %}
-    <title>
-        Haste</title>
+    <title>Haste</title>
     {% endif %}
 
     <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles.css') }}">
@@ -29,10 +27,10 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                User Info
+                    {{ current_user.first_name }} {{ current_user.last_name }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Balance:</a>
+                <a class="dropdown-item" href="#">Balance: {{ "$%.2f"|format(current_user.balance) }}</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
                 </div>

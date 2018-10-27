@@ -20,7 +20,7 @@ def index():
     registration_form = RegistrationForm()
 
     if registration_form.submit1.data and registration_form.validate_on_submit():
-        user = User(phone=registration_form.phone.data, email=registration_form.email.data, school=registration_form.school.data)
+        user = User(phone=registration_form.phone.data, email=registration_form.email.data, first_name=registration_form.first_name.data, last_name=registration_form.last_name.data, school=registration_form.school.data)
         user.set_password(registration_form.password.data)
         db.session.add(user)
         db.session.commit()
