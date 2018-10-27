@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" enctype='application/json'>
     <input type="submit" value="Checkout">
     <div id="items">
         <input class="search" placeholder="Search">
         <table>
             <thead>
                 <tr>
-                    <th></th>
                     <th>Item</th>
                     <th>Price</th>
                     <th>Quantity</th>
@@ -17,8 +16,8 @@
             <tbody class="list">
             {% for item in items %}
                 <tr>
-                    <td><input type="checkbox" name="{{ item.id }}"></td>
-                    <td class="name">{{ item.name }}</td>
+                    <td class="name"><input type="checkbox" id="{{ item.id }}" name="{{ item.id }}">
+                        <label for="{{ item.id }}">{{ item.name }}</label></td>
                     <td class="price">{{ "$%.2f"|format(item.price) }}</td>
                     <td><input type="number" name="{{ item.id }}-quantity" min="0" step="1"></td>
                 </tr>
@@ -31,4 +30,5 @@
 <script>
 var userList = new List('items', {valueNames: ['name']});
 </script>
+
 {% endblock %}
