@@ -11,8 +11,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     school = db.Column(db.String(128), index=True)
     requests = db.relationship('Request', foreign_keys='[Request.placed_by]', backref='author', lazy='dynamic')
-    completed_requests = db.relationship('Request', foreign_keys='[Request.fulfilled_by]', backref='shopper', lazy='dynamic')
-     
+    completed_requests = db.relationship('Request', foreign_keys='[Request.fulfilled_by]', backref='shopper', lazy='dynamic')  
 
     def __repr__(self):
         return '<User {}>'.format(self.email) 

@@ -13,6 +13,8 @@
         {% for request in requests %}
         <tr>
             <th scope="row">{{ request.author.id }}</th>
+            <th scope="row">{{ request.contents.quantity }}
+            </th>
         </tr>
         {% endfor %}
     </table>
