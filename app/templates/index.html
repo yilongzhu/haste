@@ -25,7 +25,7 @@
                         {{ login_form.hidden_tag() }}       
                         <div class="form-group">
                             {{ login_form.username.label(for="user-login") }}<br>
-                            {{ login_form.username(size=32, class="form-control", id="user-login", placeholder="Phone number or username") }}  
+                            {{ login_form.username(size=32, class="form-control", id="user-login", placeholder="Phone number or email") }}  
                             {% for error in login_form.username.errors %}
                             <span style = "color: red;">[{{ error }}]</span>
                             {% endfor %}
