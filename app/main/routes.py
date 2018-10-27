@@ -1,5 +1,5 @@
 from flask import render_template, request
-from sqlalchemy import desc
+from sqlalchemy.sql import collate
 
 from app import db
 from app.main import bp
@@ -17,7 +17,7 @@ def home():
 @bp.route('/neworder', methods=['GET', 'POST'])
 @login_required
 def new_order():
-    items = Item.query.all()
+    items = Item.query.order_by(collate(Item.name, 'NOCASE')).all()
     return render_template('new_order.html', items=items)
 
 

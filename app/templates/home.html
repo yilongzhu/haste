@@ -10,7 +10,11 @@
                 <th scope="col">Price Estimation</th>
             </tr>
         </thead>
-        
+        {% for request in requests %}
+        <tr>
+            <th scope="row">{{ request.author.id }}</th>
+        </tr>
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
