@@ -35,7 +35,7 @@ def index():
         flash('Please login to continue.')
         return redirect(url_for('main.index'))
 
-    return render_template('index.html')
+    return render_template('index.html', login_form=login_form, registration_form=registration_form)
 
 
 @bp.route('/logout')
