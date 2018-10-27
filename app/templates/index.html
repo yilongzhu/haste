@@ -17,6 +17,17 @@
                 <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
             </li>
         </ul>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div>
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    {% endwith %}
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
                 <div class="container">
@@ -63,7 +74,7 @@
                             <span style = "color: red;">[{{ error }}]</span>
                             {% endfor %}
                         </div>
-                        <div class='form-group'>
+                        <div class='form-group'>    
                             {{ registration_form.password.label(for='set-password') }}
                             {{ registration_form.password(size=32, class='form-control', id='set-password', placeholder="Password") }}
                             {% for error in registration_form.password.errors %}
@@ -79,7 +90,7 @@
                         </div>
                         <div class='form-group'>
                             {{ registration_form.school.label(for='set-school') }}<br>
-                            {{ registration_form.school(size=32, class='form-control', id='set-school', placeholder='College affiliaton') }}
+                            {{ registration_form.school(class='form-control', id='set-school', placeholder='College affiliaton') }}
                             {% for error in registration_form.school.errors %}
                             <span style = "color: red;">[{{ error }}]</span>
                             {% endfor %}
