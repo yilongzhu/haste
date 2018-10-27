@@ -1,31 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="POST" enctype='application/json'>
-    <input type="submit" value="Checkout">
-    <div id="items">
-        <input class="search" placeholder="Search">
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody class="list">
-            {% for item in items %}
-                <tr>
-                    <td class="name"><input type="checkbox" id="{{ item.id }}" name="{{ item.id }}">
-                        <label for="{{ item.id }}">{{ item.name }}</label></td>
-                    <td class="price">{{ "$%.2f"|format(item.price) }}</td>
-                    <td><input type="number" name="{{ item.id }}-quantity" min="0" step="1"></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+<div id="items" class="container">
+    <div class = "row justify-content-md-center">
+        <form method="POST" enctype='application/json'>
+            <input class="search" placeholder="Search">
+            <button class = "btn btn-outline-success" type="submit">Checkout</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody class="list">
+                {% for item in items %}
+                    <tr>
+                        <td class="name"><input type="checkbox" id="{{ item.id }}" name="{{ item.id }}">
+                            <label for="{{ item.id }}">{{ item.name }}</label></td>
+                        <td class="price">{{ "$%.2f"|format(item.price) }}</td>
+                        <td><input type="number" name="{{ item.id }}-quantity" min="0" step="1"></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
     </div>
-</form>
+</div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 <script>
 var userList = new List('items', {valueNames: ['name']});

@@ -1,84 +1,96 @@
-{% extends "base.html" %}
-
-{% block content %}
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
-    </li>   
-    <li class="nav-item">
-        <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
-    </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
-        <div class="container">
-            <h1>Login</h1>
-            <form action = "" method = "post" novalidate>
-                {{ login_form.hidden_tag() }}       
-                <div class="form-group">
-                    {{ login_form.username.label(for="user-login") }}<br>
-                    {{ login_form.username(size=32, class="form-control", id="user-login", placeholder="Phone number or username") }}  
-                    {% for error in login_form.username.errors %}
-                    <span style = "color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>  
-                <div class="form-group">
-                    {{ login_form.password.label(for="password-login") }}<br>
-                    {{ login_form.password(size = 32, class="form-control", id="password-login", placeholder="password") }}
-                    {% for error in login_form.password.errors %}
-                    <span style = "color: red;">[{{ error }}]</span>
-                    {% endfor %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content ="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <title>
+            Register | Login
+        </title>
+        <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles.css') }}">
+    </head>
+    <body>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+            </li>   
+            <li class="nav-item">
+                <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+                <div class="container">
+                    <h1>Login</h1>
+                    <form action = "" method = "post" novalidate>
+                        {{ login_form.hidden_tag() }}       
+                        <div class="form-group">
+                            {{ login_form.username.label(for="user-login") }}<br>
+                            {{ login_form.username(size=32, class="form-control", id="user-login", placeholder="Phone number or username") }}  
+                            {% for error in login_form.username.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>  
+                        <div class="form-group">
+                            {{ login_form.password.label(for="password-login") }}<br>
+                            {{ login_form.password(size = 32, class="form-control", id="password-login", placeholder="password") }}
+                            {% for error in login_form.password.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <p>{{ login_form.remember_me(class="form-check-input", id="remember-me") }} {{ login_form.remember_me.label(for="remember-me") }}</p>
+                            <p>{{ login_form.submit2(class="btn btn-primary") }}</p>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <p>{{ login_form.remember_me(class="form-check-input", id="remember-me") }} {{ login_form.remember_me.label(for="remember-me") }}</p>
-                    <p>{{ login_form.submit2(class="btn btn-primary") }}</p>
+            </div>
+            <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
+                <div class='container'>
+                    <h1>Register</h1>
+                    <form action = "" method ="post" novalidate>
+                        {{ registration_form.hidden_tag() }}
+                        <div class='form-group'>
+                            {{ registration_form.phone.label(for="phone-registration") }}
+                            {{ registration_form.phone(size=32, class="form-control", id="phone-registration", placeholder="Enter phone number") }}
+                            {% for error in registration_form.phone.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+                        <div class='form-group'>
+                            {{ registration_form.email.label(for='email-registration') }}
+                            {{ registration_form.email(size=64, class='form-control', id='email-registration', placeholder="Enter email") }}
+                            {% for error in registration_form.email.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+                        <div class='form-group'>
+                            {{ registration_form.password.label(for='set-password') }}
+                            {{ registration_form.password(size=32, class='form-control', id='set-password', placeholder="Password") }}
+                            {% for error in registration_form.password.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+                        <div class='form-group'>
+                            {{ registration_form.password2.label(for='retype-password') }}
+                            {{ registration_form.password2(size=32, class='form-control', id='retype-password', placeholder="Retype password") }}
+                            {% for error in registration_form.password2.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+                        <div class='form-group'>
+                            {{ registration_form.school.label(for='set-school') }}<br>
+                            {{ registration_form.school(size=32, class='form-control', id='set-school', placeholder='College affiliaton') }}
+                            {% for error in registration_form.school.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+                        {{ registration_form.submit1(class='btn btn-primary') }}
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
-    <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
-        <div class='container'>
-            <h1>Register</h1>
-            <form action = "" method ="post" novalidate>
-                {{ registration_form.hidden_tag() }}
-                <div class='form-group'>
-                    {{ registration_form.phone.label(for="phone-registration") }}
-                    {{ registration_form.phone(size=32, class="form-control", id="phone-registration", placeholder="Enter phone number") }}
-                    {% for error in registration_form.phone.errors %}
-                    <span style = "color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                <div class='form-group'>
-                    {{ registration_form.email.label(for='email-registration') }}
-                    {{ registration_form.email(size=64, class='form-control', id='email-registration', placeholder="Enter email") }}
-                    {% for error in registration_form.email.errors %}
-                    <span style = "color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                <div class='form-group'>
-                    {{ registration_form.password.label(for='set-password') }}
-                    {{ registration_form.password(size=32, class='form-control', id='set-password', placeholder="Password") }}
-                    {% for error in registration_form.password.errors %}
-                    <span style = "color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                <div class='form-group'>
-                    {{ registration_form.password2.label(for='retype-password') }}
-                    {{ registration_form.password2(size=32, class='form-control', id='retype-password', placeholder="Retype password") }}
-                    {% for error in registration_form.password2.errors %}
-                    <span style = "color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                <div class='form-group'>
-                    {{ registration_form.school.label(for='set-school') }}<br>
-                    {{ registration_form.school(size=32, class='form-control', id='set-school', placeholder='College affiliaton') }}
-                    {% for error in registration_form.school.errors %}
-                    <span style = "color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                {{ registration_form.submit1(class='btn btn-primary') }}
-            </form>
-        </div>
-    </div>
-</div>
-{% endblock %}
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>

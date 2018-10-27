@@ -1,5 +1,6 @@
-nav {
-    display:flex;
+
+.container {
+    background-color: white;
 }
 
 tbody.list tr td:nth-child(3) input {
