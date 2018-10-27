@@ -7,16 +7,18 @@
             <tr>
                 <th scope="col">id</th>
                 <th scope="col">Number of Items</th>
-                <th scope="col">Price Estimation</th>
+                <th scope="col">Total Price</th>
             </tr>
         </thead>
-        {% for request in requests %}
-        <tr>
-            <th scope="row">{{ request.author.id }}</th>
-            <th scope="row">{{ request.contents.quantity }}
-            </th>
-        </tr>
-        {% endfor %}
+        <tbody>
+            {% for request, qp in rqp %}
+            <tr>
+                <td scope="row">{{ request.author.id }}</td>
+                <td scope="row">{{ qp['quantity'] }}</td>
+                <td scope="row">${{ qp['sum'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </div>
 {% endblock %}

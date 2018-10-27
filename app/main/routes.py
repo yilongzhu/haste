@@ -11,8 +11,20 @@ from flask_login import current_user, login_required
 @bp.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    requests = Request.query.all()
-    return render_template('home.html', requests=requests)
+    requests = Request.query.filter_by(accepted_by=None).all()
+    quantity_price = []
+    for req in requests:
+        quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.req_id==req.id)[0].total_q
+        price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE req_id=:val", {'val': req.id})
+        sum = 0
+        for row in price:
+            sum = row['sum']
+        quantity_price.append({'quantity': quantity, 'sum': sum})
+        print(quantity)
+        print(sum)
+
+
+    return render_template('home.html', rqp=zip(requests, quantity_price))
 
 
 @bp.route('/neworder', methods=['GET', 'POST'])
