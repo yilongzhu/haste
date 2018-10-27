@@ -9,9 +9,12 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(10), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    first_name = db.Column(db.String(48))
+    last_name = db.Column(db.String(48))
     school = db.Column(db.String(128), index=True)
     orders = db.relationship('Order', foreign_keys='[Order.placed_by]', backref='author', lazy='dynamic')
     completed_orders = db.relationship('Order', foreign_keys='[Order.accepted_by]', backref='shopper', lazy='dynamic')
+    balance = db.Column(db.Float, default=0)
      
 
     def __repr__(self):

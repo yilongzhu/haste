@@ -9,6 +9,8 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
     school = SelectField('University or College', choices =[('Emory', 'Emory University'), ('GTech', 'Georgia Institute of Technology')])
     submit1 = SubmitField('Register')
 
