@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for
 from sqlalchemy.sql import collate
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, desc
 
 from app import db
 from app.main import bp
@@ -11,7 +11,7 @@ from flask_login import current_user, login_required
 @bp.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    orders = Order.query.filter_by(accepted_by=None).all()
+    orders = Order.query.filter_by(accepted_by=None).order_by(desc(Order.time_of_order)).all()
     quantity_price = []
     for order in orders:
         quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.order_id==order.id)[0].total_q
@@ -38,6 +38,9 @@ def new_order():
             if data[key] != '':
                 newdict[key] = data[key]
                 print("Added to dict")
+        if (not newdict):
+            flash('Your order is empty.')
+            return redirect(url_for('main.new_order')) 
 
         order = Order(author=current_user)
         db.session.add(order)
@@ -48,7 +51,7 @@ def new_order():
             if (newdict[key] == 'on'):
                 temp = key+"-quantity"
                 quantity = 1 if temp not in newdict else int(newdict[temp])
-                content = Content(cart=req, item_id=int(key), quantity=int(quantity))
+                content = Content(cart=order, item_id=int(key), quantity=int(quantity))
                 db.session.add(content)
                 db.session.commit()
 
@@ -58,8 +61,11 @@ def new_order():
     return render_template('new_order.html', items=items)
 
 
-@bp.route('/order<int:id>', methods=['GET', 'POST'])
+@bp.route('/order/<int:id>', methods=['GET', 'POST'])
 @login_required
 def order(id):
+    order = Order.query.filter_by(id=id).first_or_404()
+    items = db.engine.execute("SELECT * FROM content JOIN item ON content.item_id=item.id WHERE content.order_id=:val", {'val': order.id})
 
-    return render_template('order.html', items=items)
+    #items = Content.query.join(Item, Content.item_id==Item.id).add_columns(Item.price).filter(Content.order_id==order.id).all()
+    return render_template('order.html', items = items)
