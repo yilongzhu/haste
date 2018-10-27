@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    {% if title %}
+    <title>{{ title }} - Haste</title>
+    {% else %}
+    <title>Haste</title>
+    {% endif %}
+</head>
+
+<body>
+    <nav>
+        <a href="{{ url_for('main.index') }}">Haste</a>
+    </nav>
+
+    {% block content %}{% endblock %}
+</body>
+            

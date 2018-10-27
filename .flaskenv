@@ -1,0 +1,2 @@
+FLASK_APP=ignition.py
+FLASK_ENV=development
