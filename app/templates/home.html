@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="requests">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">Number of Items</th>
-                <th scope="col">Total Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for request, qp in rqp %}
-            <tr>
-                <td scope="row">{{ request.author.id }}</td>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Number of Items</th>
+            <th scope="col">Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order, qp in rqp %}
+            <tr class='clickable-row' data-href="{{ url_for('main.order', id=order.id) }}">
+                <td scope="row">{{ order.author.id }}</td>
                 <td scope="row">{{ qp['quantity'] }}</td>
                 <td scope="row">${{ qp['sum'] }}</td>
             </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+        </a>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
