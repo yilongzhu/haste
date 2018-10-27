@@ -12,9 +12,6 @@ from flask_login import current_user, login_required
 @login_required
 def home():
     requests = Request.query.all()
-    for req in requests:
-        contents = Content.query.filter(Content.card.id = req.id)
-
     return render_template('home.html', requests=requests)
 
 
