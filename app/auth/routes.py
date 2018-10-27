@@ -43,13 +43,17 @@ def register():
         return redirect(url_for('main.index'))
 
     form = RegistrationForm()
+
+    print("Entered route again")
+    print(form.validate_on_submit())
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        print("Entered if statement")
+        user = User(phone=form.phone.data, email=form.email.data)
         user.set_password(form.password.data)
-        user.set_avatar('default.png')
         db.session.add(user)
         db.session.commit()
-        flash('You are now registered.')
+        flash('You are now registered!')
         return redirect(url_for('auth.login'))
-    
+    print("After if statement")
+
     return render_template('auth/register.html', title='Register', form=form)

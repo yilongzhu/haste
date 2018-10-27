@@ -5,11 +5,11 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
-    phone = StringField('Phone Number', validators=[DataRequired()])
+    email = StringField('Email')
+    phone = StringField('Phone Number')
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Login')
 
 
 class RegistrationForm(FlaskForm):
@@ -21,9 +21,9 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_phone(self, phone):
-        phone = User.query.filter_by(username=username.data).first()
-        if phone is not None:
-            raise ValidationError('Username is already in use.')
+        user = User.query.filter_by(phone=phone.data).first()
+        if user is not None:
+            raise ValidationError('Phone is already in use.')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
