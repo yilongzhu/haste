@@ -20,16 +20,16 @@ def index():
     registration_form = RegistrationForm()
 
     if login_form.validate_on_submit():
-        user = User.query.filter((User.phone==form.phone.data) | (User.email==form.email.data)).first()
-        if user is None or not user.check_password(form.password.data):
+        user = User.query.filter((User.phone==login_form.username.data) | (User.email==login_form.username.data)).first()
+        if user is None or not user.check_password(login_form.password.data):
             flash('Invalid phone number or password')
             return redirect(url_for('main.home'))
-        login_user(user, remember=form.remember_me.data)
+        login_user(user, remember=login_form.remember_me.data)
         return redirect(url_for('main.home'))
 
     if registration_form.validate_on_submit():
-        user = User(phone=form.phone.data, email=form.email.data, school=form.school.data)
-        user.set_password(form.password.data)
+        user = User(phone=registration_form.phone.data, email=registration_form.email.data, school=registration_form.school.data)
+        user.set_password(registration_form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('Please login to continue.')
@@ -41,4 +41,4 @@ def index():
 @bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('auth.index'))

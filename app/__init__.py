@@ -11,7 +11,7 @@ migrate = Migrate()
 ma = Marshmallow()
 
 login = LoginManager()
-login.login_view = 'auth.login'
+login.login_view = 'auth.index'
 
 def create_app(config_class=Config):
     application = Flask(__name__)
