@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from sqlalchemy.sql import collate
 from sqlalchemy.sql import func, desc
 
@@ -19,9 +19,11 @@ def home():
         sum = 0
         for row in price:
             sum = row['sum']
+        if (not sum):
+            sum = 0
         quantity_price.append({'quantity': quantity, 'sum': sum})
-        print(quantity)
-        print(sum)
+        #print(quantity)
+        #print(sum)
 
 
     return render_template('home.html', rqp=zip(orders, quantity_price))
@@ -37,7 +39,7 @@ def new_order():
         for key in data:
             if data[key] != '':
                 newdict[key] = data[key]
-                print("Added to dict")
+                #print("Added to dict")
         if (not newdict):
             flash('Your order is empty.')
             return redirect(url_for('main.new_order')) 
@@ -71,18 +73,18 @@ def order(id):
     sum = 0
     for row in price:
         sum = row['sum']
-    # for i in items:
-    #     print(i[0])
-    #items = Content.query.join(Item, Content.item_id==Item.id).add_columns(Item.price).filter(Content.order_id==order.id).all()
-    return render_template('order.html', order=order, user=user, items = items, sum=sum)
+        return render_template('order.html', order=order, user=user, items = items, sum=sum)
 
 
 @bp.route('/order/<int:id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_order(id):
+    print(id)
     order = Order.query.filter_by(id=id).first()
     db.session.delete(order)
     db.session.commit()
+    flash("Order deleted.")
+    return redirect(url_for('main.home')) 
 
 @bp.route('/accepted_orders')
 @login_required
