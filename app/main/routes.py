@@ -83,3 +83,8 @@ def delete_order(id):
     order = Order.query.filter_by(id=id).first()
     db.session.delete(order)
     db.session.commit()
+
+@bp.route('/accepted_orders')
+@login_required
+def accepted_orders():
+    accepted = Order.query.filter_by(accepted_by=current_user)
