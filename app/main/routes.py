@@ -73,10 +73,15 @@ def order(id):
         order_id = request.form['order_id']
         print(order_id)
         order = Order.query.filter_by(id=order_id).first()
+<<<<<<< HEAD
         print(order)
         order.shopper = current_user
         db.session.commit()
         flash("Order accepted!")
+=======
+        order.accepted_by = current_user
+        flash("Order accepted!", 'success')
+>>>>>>> 2f6d332b991607f4e588ec2c208238440efc6a7c
         return redirect(url_for('main.home'))
 
     order = Order.query.filter_by(id=id).first_or_404()
