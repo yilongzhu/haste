@@ -11,7 +11,7 @@ from flask_login import current_user, login_required
 @bp.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    orders = Order.query.filter_by(accepted_by=None).order_by(desc(Order.time_of_order)).all()
+    orders = Order.query.filter(Order.accepted_by==None).order_by(desc(Order.time_of_order)).all()
     quantity_price = []
     for order in orders:
         quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.order_id==order.id)[0].total_q
