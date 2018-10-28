@@ -34,14 +34,14 @@
 
 <div class="col-md-4 m-*-auto">
     {% if order.author==current_user %}
-    <a href="{{ url_for('main.delete_order', id=order.id) }}" class="btn btn-danger">Delete Order</a>
+    <a href="{{ url_for('main.delete_order', id=order.id) }}" class="btn btn-danger mb-3">Delete Order</a>
     {% elif order.accepted_by==None %}
     <form method="POST">
         <input type=hidden name="order_id" value="{{ order.id }}">
-        <button type="submit" class="btn btn-success">Accept Order</button>
+        <button type="submit" class="btn btn-success mb-3">Accept Order</button>
     </form>
     {% else %}
-    <a href="{{ url_for('main.complete_order', id=order.id) }}" class="btn btn-success">Completed</a>
+    <a href="{{ url_for('main.complete_order', id=order.id) }}" class="btn btn-success mb-3">Completed</a>
     {% endif %}
 </div>
 {% endblock %}
