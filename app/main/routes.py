@@ -75,3 +75,11 @@ def order(id):
     #     print(i[0])
     #items = Content.query.join(Item, Content.item_id==Item.id).add_columns(Item.price).filter(Content.order_id==order.id).all()
     return render_template('order.html', order=order, user=user, items = items, sum=sum)
+
+
+@bp.route('/order/<int:id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_order(id):
+    order = Order.query.filter_by(id=id).first()
+    db.session.delete(order)
+    db.session.commit()
