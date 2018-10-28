@@ -33,13 +33,13 @@
 </table>
 
 <div class="col-md-4 m-*-auto">
-    {% if order.accepted_by==None %}
+    {% if order.author==current_user %}
+    <a href="{{ url_for('main.delete_order', id=order.id) }}" class="btn btn-danger">Delete Order</a>
+    {% elif order.accepted_by==None %}
     <form method="POST">
         <input type=hidden name="order_id" value="{{ order.id }}">
         <button type="submit" class="btn btn-success">Accept Order</button>
     </form>
-    {% elif order.author==current_user %}
-    <a href="{{ url_for('main.delete_order', id=order.id) }}" class="btn btn-danger">Delete Order</a>
     {% else %}
     <a href="{{ url_for('main.complete_order', id=order.id) }}" class="btn btn-success">Completed</a>
     {% endif %}
