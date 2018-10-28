@@ -89,4 +89,15 @@ def delete_order(id):
 @bp.route('/accepted_orders')
 @login_required
 def accepted_orders():
-    accepted = Order.query.filter_by(accepted_by=current_user)
+    orders = Order.query.filter_by(shopper=current_user).order_by(desc(Order.time_of_order)).all()
+    quantity_price = []
+    for order in orders:
+        quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.order_id==order.id)[0].total_q
+        price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE order_id=:val", {'val': order.id})
+        sum = 0
+        for row in price:
+            sum = row['sum']
+        if (not sum):
+            sum = 0
+        quantity_price.append({'quantity': quantity, 'sum': sum})
+    return render_template('accepted_orders.html', rqp=zip(orders, quantity_price))
