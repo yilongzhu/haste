@@ -1,6 +1,7 @@
 # Haste - A Peer-to-Peer Grocery Shopping App
-Yilong Zhu ([@yilongzhu](https://github.com/yilongzhu "Allen's GitHub")
-Daniel Kong ([@danielkong365](https://github.com/danielkong365 "Daniel's GitHub")
+Yilong Zhu ([@yilongzhu](https://github.com/yilongzhu "Allen's GitHub"))
+
+Daniel Kong ([@danielkong365](https://github.com/danielkong365 "Daniel's GitHub"))
 
 
 ## HackATL 2018 Project
