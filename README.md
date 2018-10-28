@@ -1,4 +1,4 @@
-# Haste - A Peer-to-Peer Grocery Shopping App
+# Haste - A Peer-to-Peer Grocery Delivery App
 Yilong Zhu ([@yilongzhu](https://github.com/yilongzhu "Allen's GitHub"))
 
 Daniel Kong ([@danielkong365](https://github.com/danielkong365 "Daniel's GitHub"))
