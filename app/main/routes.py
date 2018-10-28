@@ -101,3 +101,7 @@ def accepted_orders():
             sum = 0
         quantity_price.append({'quantity': quantity, 'sum': sum})
     return render_template('accepted_orders.html', rqp=zip(orders, quantity_price))
+
+@bp.route('/order/int:id>/accept', methods=['GET', 'POST'])
+@login_required
+def accept_order():
