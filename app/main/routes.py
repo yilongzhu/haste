@@ -8,6 +8,14 @@ from app.models import User, Item, Order, Content
 from flask_login import current_user, login_required
 
 
+def get_total_price(order):
+    price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE order_id=:val", {'val': order.id})
+    sum = 0
+    for row in price:
+        sum = row['sum']
+    return sum
+
+
 @bp.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
@@ -15,12 +23,7 @@ def home():
     quantity_price = []
     for order in orders:
         quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.order_id==order.id)[0].total_q
-        price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE order_id=:val", {'val': order.id})
-        sum = 0
-        for row in price:
-            sum = row['sum']
-        if (not sum):
-            sum = 0
+        sum = get_total_price(order)
         quantity_price.append({'quantity': quantity, 'sum': sum})
         #print(quantity)
         #print(sum)
@@ -68,19 +71,19 @@ def new_order():
 def order(id):
     if request.method == 'POST':
         order_id = request.form['order_id']
+        print(order_id)
         order = Order.query.filter_by(id=order_id).first()
-        order.accepted_by = current_user
+        print(order)
+        order.shopper = current_user
+        db.session.commit()
         flash("Order accepted!")
         return redirect(url_for('main.home'))
 
     order = Order.query.filter_by(id=id).first_or_404()
     items = db.engine.execute("SELECT item.name, item.price, quantity FROM content JOIN item ON content.item_id=item.id WHERE content.order_id=:val", {'val': order.id})
     user = User.query.filter_by(id=order.placed_by).first()
-    price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE order_id=:val", {'val': order.id})
-    sum = 0
-    for row in price:
-        sum = row['sum']
-        return render_template('order.html', order=order, user=user, items = items, sum=sum)
+    sum = get_total_price(order)
+    return render_template('order.html', order=order, user=user, items = items, sum=sum)
 
 
 @bp.route('/order/<int:id>/delete', methods=['GET', 'POST'])
@@ -93,6 +96,7 @@ def delete_order(id):
     flash("Order deleted.", 'info')
     return redirect(url_for('main.home')) 
 
+
 @bp.route('/accepted_orders')
 @login_required
 def accepted_orders():
@@ -100,12 +104,17 @@ def accepted_orders():
     quantity_price = []
     for order in orders:
         quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.order_id==order.id)[0].total_q
-        price = db.engine.execute("SELECT ROUND(SUM(content.quantity * item.price), 2) as sum FROM content JOIN item ON content.item_id=item.id WHERE order_id=:val", {'val': order.id})
-        sum = 0
-        for row in price:
-            sum = row['sum']
-        if (not sum):
-            sum = 0
+        sum = get_total_price(order)
         quantity_price.append({'quantity': quantity, 'sum': sum})
     return render_template('accepted_orders.html', rqp=zip(orders, quantity_price))
 
+
+@bp.route('/order/<int:id>/complete', methods=['GET', 'POST'])
+@login_required
+def complete_order(id):
+    order = Order.query.filter_by(id=id).first()
+    order.completed = True
+    db.session.commit()
+
+    flash("Order deleted.", 'info')
+    return redirect(url_for('main.home'))

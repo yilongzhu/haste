@@ -5,8 +5,8 @@
     <thead>
         <tr>
             <th scope="col">Student</th>
-            <th scope="col">Number of Items</th>
-            <th scope="col">Total Price</th>
+            <th scope="col">Items</th>
+            <th scope="col">Total</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +19,7 @@
                 {% endif %}
                 <td scope="row">{{ qp['quantity'] }}</td>
                 <td scope="row">{{ "$%.2f"|format(qp['sum']) }}</td>
+                <td><a href="{{ url_for('main.complete_order', id=order.id) }}">Completed</a></td>
             </tr>
         </a>
         {% endfor %}
