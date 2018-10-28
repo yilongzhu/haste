@@ -12,8 +12,8 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(48))
     last_name = db.Column(db.String(48))
     school = db.Column(db.String(128), index=True)
-    orders = db.relationship('Order', foreign_keys='[Order.placed_by]', backref='author', lazy='dynamic')
-    completed_orders = db.relationship('Order', foreign_keys='[Order.accepted_by]', backref='shopper', lazy='dynamic')
+    orders = db.relationship('Order', foreign_keys='[Order.placed_by]', backref='author', lazy='dynamic', cascade="save-update")
+    completed_orders = db.relationship('Order', foreign_keys='[Order.accepted_by]', backref='shopper', lazy='dynamic', cascade="save-update")
     balance = db.Column(db.Float, default=0)
      
 
@@ -33,7 +33,7 @@ class Order(db.Model):
     placed_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     accepted_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     completed = db.Column(db.Boolean, default=False)
-    contents = db.relationship('Content', backref='cart', lazy='dynamic')
+    contents = db.relationship('Content', backref='cart', lazy='dynamic', cascade="all, delete-orphan")
 
 
 class Content(db.Model):

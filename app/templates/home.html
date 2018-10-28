@@ -18,7 +18,7 @@
                 <td scope="row">{{ order.author.first_name }}</td>
                 {% endif %}
                 <td scope="row">{{ qp['quantity'] }}</td>
-                <td scope="row">${{ qp['sum'] }}</td>
+                <td scope="row">{{ "$%.2f"|format(qp['sum']) }}</td>
             </tr>
         </a>
         {% endfor %}
