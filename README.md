@@ -5,7 +5,7 @@ Daniel Kong ([@danielkong365](https://github.com/danielkong365 "Daniel's GitHub"
 
 
 ## HackATL 2018 Project
-### Motvation
+### Motivation
 For our submission in the Health and Wellness category, we built an peer-to-peer grocery shopping application called Haste. Haste revolves around two user groups: university students that need groceries and people already at the grocery store. Many students have no reliable access to transportation or may be short on time and cannot go to grocery store. With Haste, they are able to place a request for groceries.
 
 People already at the grocery store can open Haste and see a feed of grocery store orders. Shoppers can accept a request and pick up the items listed. After delivery, they can complete their task then have money credited to their account!
