@@ -24,12 +24,12 @@ def index():
         user.set_password(registration_form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Please login to continue.')
+        flash('Please login to continue.', 'success')
         return redirect(url_for('auth.index'))
     if login_form.submit2.data and login_form.validate_on_submit():
         user = User.query.filter((User.phone==login_form.username.data) | (User.email==login_form.username.data)).first()
         if user is None or not user.check_password(login_form.password.data):
-            flash('Invalid phone number or password')
+            flash('Invalid phone number or password', 'danger')
             return redirect(url_for('auth.index'))
         login_user(user, remember=login_form.remember_me.data)
         return redirect(url_for('main.home'))
