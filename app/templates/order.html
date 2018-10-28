@@ -30,5 +30,8 @@
             <td>${{ sum }}</td>
     </tbody>
 </table>
-<a class="btn btn-success">Accept Order</a>
+<form method="POST">
+    <input type=hidden name="order_id" value="{{ order.id }}">
+    <button type="submit" class="btn btn-success">Accept Order</button>
+</form>
 {% endblock %}

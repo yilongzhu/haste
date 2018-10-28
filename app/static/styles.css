@@ -10,6 +10,10 @@ table#order-feed tr:hover {
     cursor: pointer;
 }
 
+table#accepted-feed tr:hover {
+    cursor: pointer;
+}
+
 .btn-success {
     color: white !important;
 }

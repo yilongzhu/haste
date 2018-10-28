@@ -66,6 +66,13 @@ def new_order():
 @bp.route('/order/<int:id>', methods=['GET', 'POST'])
 @login_required
 def order(id):
+    if request.method == 'POST':
+        order_id = request.form['order_id']
+        order = Order.query.filter_by(id=order_id).first()
+        order.accepted_by = current_user
+        flash("Order accepted!")
+        return redirect(url_for('main.home'))
+
     order = Order.query.filter_by(id=id).first_or_404()
     items = db.engine.execute("SELECT item.name, item.price, quantity FROM content JOIN item ON content.item_id=item.id WHERE content.order_id=:val", {'val': order.id})
     user = User.query.filter_by(id=order.placed_by).first()
