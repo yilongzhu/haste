@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col">
             <h3>Order placed by: {{ order.author.first_name }}</h3>
+            <h4>Payout: {{ "$%.2f"|format(payout) }}</h3>
         </div>
     </div>
 </div>
@@ -30,8 +31,15 @@
             <td>${{ sum }}</td>
     </tbody>
 </table>
-<form method="POST">
-    <input type=hidden name="order_id" value="{{ order.id }}">
-    <button type="submit" class="btn btn-success">Accept Order</button>
-</form>
+
+<div class="col-md-4 m-*-auto">
+    {% if order.accepted_by==None %}
+    <form method="POST">
+        <input type=hidden name="order_id" value="{{ order.id }}">
+        <button type="submit" class="btn btn-success">Accept Order</button>
+    </form>
+    {% else %}
+    <a href="{{ url_for('main.complete_order', id=order.id) }}" class="btn btn-success">Completed</a>
+    {% endif %}
+</div>
 {% endblock %}

@@ -7,18 +7,16 @@
             <th scope="col">Student</th>
             <th scope="col">Items</th>
             <th scope="col">Total</th>
+            <th scope="col">Payout</th>
         </tr>
     </thead>
     <tbody>
         {% for order, qp in rqp %}
             <tr class='clickable-row' data-href="{{ url_for('main.order', id=order.id) }}">
-                {% if current_user.id==order.placed_by %}
-                <td>You (<a href="{{ url_for('main.delete_order', id=order.id) }}">delete</a>)</td>
-                {% else %}
                 <td scope="row">{{ order.author.first_name }}</td>
-                {% endif %}
                 <td scope="row">{{ qp['quantity'] }}</td>
                 <td scope="row">{{ "$%.2f"|format(qp['sum']) }}</td>
+                <td scope="row">{{ "$%.2f"|format(qp['payout']) }}</td>
                 <td><a href="{{ url_for('main.complete_order', id=order.id) }}">Completed</a></td>
             </tr>
         </a>

@@ -15,6 +15,9 @@ def get_total_price(order):
         sum = row['sum']
     return sum
 
+def get_payout(total):
+    return total*.0335 + 1.5
+
 
 @bp.route('/home', methods=['GET', 'POST'])
 @login_required
@@ -73,22 +76,17 @@ def order(id):
         order_id = request.form['order_id']
         print(order_id)
         order = Order.query.filter_by(id=order_id).first()
-<<<<<<< HEAD
-        print(order)
         order.shopper = current_user
         db.session.commit()
-        flash("Order accepted!")
-=======
-        order.accepted_by = current_user
         flash("Order accepted!", 'success')
->>>>>>> 2f6d332b991607f4e588ec2c208238440efc6a7c
         return redirect(url_for('main.home'))
 
     order = Order.query.filter_by(id=id).first_or_404()
     items = db.engine.execute("SELECT item.name, item.price, quantity FROM content JOIN item ON content.item_id=item.id WHERE content.order_id=:val", {'val': order.id})
     user = User.query.filter_by(id=order.placed_by).first()
     sum = get_total_price(order)
-    return render_template('order.html', order=order, user=user, items = items, sum=sum)
+    payout = get_payout(sum)
+    return render_template('order.html', order=order, payout=payout, user=user, items = items, sum=sum)
 
 
 @bp.route('/order/<int:id>/delete', methods=['GET', 'POST'])
@@ -105,12 +103,13 @@ def delete_order(id):
 @bp.route('/accepted_orders')
 @login_required
 def accepted_orders():
-    orders = Order.query.filter_by(shopper=current_user).order_by(desc(Order.time_of_order)).all()
+    orders = Order.query.filter((Order.shopper==current_user) & (Order.completed==False)).order_by(desc(Order.time_of_order)).all()
     quantity_price = []
     for order in orders:
         quantity = Content.query.with_entities(func.sum(Content.quantity).label('total_q')).filter(Content.order_id==order.id)[0].total_q
         sum = get_total_price(order)
-        quantity_price.append({'quantity': quantity, 'sum': sum})
+        payout = get_payout(sum)
+        quantity_price.append({'quantity': quantity, 'sum': sum, 'payout': payout})
     return render_template('accepted_orders.html', rqp=zip(orders, quantity_price))
 
 
@@ -118,8 +117,11 @@ def accepted_orders():
 @login_required
 def complete_order(id):
     order = Order.query.filter_by(id=id).first()
+    payout = get_payout(get_total_price(order))
     order.completed = True
+    new_balance = current_user.balance + payout
+    current_user.balance = new_balance
     db.session.commit()
 
-    flash("Order deleted.", 'info')
-    return redirect(url_for('main.home'))
+    flash("New balance: ${:0.2f}.".format(new_balance), 'info')
+    return redirect(url_for('main.accepted_orders'))
