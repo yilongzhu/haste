@@ -38,6 +38,8 @@
         <input type=hidden name="order_id" value="{{ order.id }}">
         <button type="submit" class="btn btn-success">Accept Order</button>
     </form>
+    {% else if order.author==current_user %}
+    <a href="{{ url_for('main.delete_order', id=order.id) }}" class="btn btn-success">Delete Order</a>
     {% else %}
     <a href="{{ url_for('main.complete_order', id=order.id) }}" class="btn btn-success">Completed</a>
     {% endif %}
