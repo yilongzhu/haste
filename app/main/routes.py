@@ -70,7 +70,7 @@ def order(id):
         order_id = request.form['order_id']
         order = Order.query.filter_by(id=order_id).first()
         order.accepted_by = current_user
-        flash("Order accepted!")
+        flash("Order accepted!", 'success')
         return redirect(url_for('main.home'))
 
     order = Order.query.filter_by(id=id).first_or_404()
