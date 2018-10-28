@@ -41,7 +41,7 @@ def new_order():
                 newdict[key] = data[key]
                 #print("Added to dict")
         if (not newdict):
-            flash('Your order is empty.')
+            flash('Your order is empty.', 'info')
             return redirect(url_for('main.new_order')) 
 
         order = Order(author=current_user)
@@ -83,7 +83,7 @@ def delete_order(id):
     order = Order.query.filter_by(id=id).first()
     db.session.delete(order)
     db.session.commit()
-    flash("Order deleted.")
+    flash("Order deleted.", 'info')
     return redirect(url_for('main.home')) 
 
 @bp.route('/accepted_orders')
@@ -101,3 +101,4 @@ def accepted_orders():
             sum = 0
         quantity_price.append({'quantity': quantity, 'sum': sum})
     return render_template('accepted_orders.html', rqp=zip(orders, quantity_price))
+
