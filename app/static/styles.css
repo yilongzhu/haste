@@ -1,4 +1,3 @@
-
 .container {
     background-color: white;
 }
@@ -9,4 +8,27 @@ tbody.list tr td:nth-child(3) input {
 
 table#order-feed tr:hover {
     cursor: pointer;
+}
+
+.btn-success {
+    color: white !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #424242;
+    padding-top: .3em;
+}
+
+.navbar {
+    padding: 0 1rem;
+    font-size: 1.2rem;
+}
+
+.navbar-brand {
+    font-size: 2.4em !important;
+}
+
+nav img {
+    position: relative !important;
+    bottom: 6px !important;
 }
