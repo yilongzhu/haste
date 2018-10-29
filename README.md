@@ -28,5 +28,4 @@ Security definitely needs to be upped: users can easily manipulate the app in th
 * **Flask-Migrate** for database migration
 * **Flask-Login** for user accounts
 * **Flask-WTF** to make our forms
-* **Flask-** to make our forms
 * **Bootstrap 4** for front-end design
